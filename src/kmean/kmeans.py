@@ -23,22 +23,18 @@ class Cluster:
 class KMeans:
 
     def __init__(self, clusters : list[Cluster] = None):
-        if clusters is None:
-            self.clusters = None
-        else:
-            self.clusters = np.array(clusters)
+        pass
     
-    def fit(self, x : np.ndarray, k : int, epochs : int = 100):
+    def fit(self, x : np.ndarray, k : int, epochs : int = 1):
         original = x
         if x.ndim == 2:
-            if self.clusters is None:
-                clusters = []
-                for i in range(k):
-                    splicer = choice(x.shape[1])
-                    cluster = Cluster(core=x[:, splicer])
-                    clusters.append(cluster)
-                    x = np.concatenate((x[:, :splicer], x[:, splicer+1:]), axis=1)
-                self.clusters = np.array(clusters)
+            clusters = []
+            for i in range(k):
+                splicer = choice(x.shape[1])
+                cluster = Cluster(core=x[:, splicer])
+                clusters.append(cluster)
+                x = np.concatenate((x[:, :splicer], x[:, splicer+1:]), axis=1)
+            self.clusters = np.array(clusters)
             for epoch in range(epochs):
                 print(f"Epoch {epoch}")
                 for i in range(x.shape[1]):
@@ -59,7 +55,18 @@ class KMeans:
                     cluster.core = cluster.get_mean()
                     cluster.family.clear()
                 
-    
+    def variation(self) -> float:
+        total_variance = 0
+        for cluster in self.clusters:
+            mean_point = cluster.get_mean()
+            variance = 0
+            variance += euclid(cluster.core, mean_point)**2
+            for point in cluster.family:
+                variance += euclid(point, mean_point)**2
+            total_variance += variance
+        return total_variance
+
+
     def plot_2D_show(self):
         x1 = []
         x2 = []

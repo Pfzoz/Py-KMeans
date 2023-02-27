@@ -14,7 +14,11 @@ simple_data = np.array(
 simple_data = normalize(simple_data)
 print(simple_data, '\n\n')
 
-myModel = KMeans()
+x = []
 
-myModel.fit(simple_data, k=5, epochs=1000)
-myModel.plot_2D_show()
+for i in range(1, 6):
+    myModel = KMeans()
+    myModel.fit(simple_data, k=i)
+    print(myModel.variation())
+    print(i)
+    myModel.plot_2D_show()
