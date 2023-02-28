@@ -20,5 +20,15 @@ for i in range(1, 6):
     myModel = KMeans()
     myModel.fit(simple_data, k=i)
     print(myModel.variation())
-    print(i)
+    x.append(myModel.variation())
     myModel.plot_2D_show()
+
+y = []
+
+for i in range(1, len(x)):
+    y.append(x[0]-x[i])
+
+# Elbow plot
+
+plt.plot(y)
+plt.show()

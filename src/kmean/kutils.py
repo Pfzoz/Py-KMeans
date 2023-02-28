@@ -6,7 +6,7 @@ class InvalidShape(Exception):
 def normalize(x : np.ndarray) -> np.ndarray:
     if x.ndim >= 2:
         for i in range(x.shape[0]):
-            x[i] = x[i]/max(x[i])
+            x[i] = (x[i]-min(x[i]))/(max(x[i])-min(x[i]))
     else:
         x = x/max(x)
     return x
